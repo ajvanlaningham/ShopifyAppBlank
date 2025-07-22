@@ -29,12 +29,19 @@ This will:
 
 ShopifyAppBlank/
 ├── AdminUI/         # Vite + React + Polaris frontend
+
 ├── Server/          # ASP.NET Core backend with stubs for OAuth and Proxy
+
 ├── Shared/          # .NET class library for shared logic
+
 ├── infra/           # Terraform templates for Azure deployment
+
 ├── .github/         # GitHub Actions CI/CD workflow
+
 ├── Config/          # .env.template and config placeholders
+
 ├── init.ps1         # Script to instantiate new apps
+
 
 ### Requirements
 
@@ -52,7 +59,7 @@ To start working on your own app:
 - Add logic as needed (pricing, tagging, custom flows, etc.).
 - Use Terraform (infra/) or GitHub Actions (.github/workflows/) to deploy.
 
-### 🛠️ Customize Me!
+### Customize Me!
 
 This shell is meant to be extended. Add your own:
 
