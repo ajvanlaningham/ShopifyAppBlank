@@ -16,19 +16,19 @@ function ReplaceInFile($file, $oldText, $newText) {
     (Get-Content $file) -replace $oldText, $newText | Set-Content $file
 }
 
-# Step 1: Copy the folder
+# Step 1: Copy everything EXCEPT .git, bin, obj, node_modules
 Write-Info "Copying app shell to $TargetPath..."
-Copy-Item -Path $SourcePath -Destination $TargetPath -Recurse -Force -Exclude '.git', 'node_modules', 'bin', 'obj'
+robocopy $SourcePath $TargetPath /E /XD ".git" "bin" "obj" "node_modules" /NFL /NDL /NJH /NJS /NC | Out-Null
 
-# Step 2: Rename folder references and content
+# Step 2: Rename identifiers inside files
 Write-Info "Replacing identifiers..."
-$filesToUpdate = Get-ChildItem -Path $TargetPath -Recurse -Include *.cs,*.csproj,*.json,*.js,*.jsx,*.ts,*.tsx,*.yml,*.md,*.env.template
+$filesToUpdate = Get-ChildItem -Path $TargetPath -Recurse -Include *.cs,*.csproj,*.json,*.js,*.jsx,*.ts,*.tsx,*.yml,*.md,*.env.template -File
 
 foreach ($file in $filesToUpdate) {
     ReplaceInFile -file $file.FullName -oldText "ShopifyDotNetApp" -newText $NewAppName
 }
 
-# Optional: Re-init Git repo
+# Step 3: Reset Git history
 if (Test-Path "$TargetPath\.git") {
     Write-Info "Removing Git history..."
     Remove-Item -Recurse -Force "$TargetPath\.git"
